@@ -13,6 +13,7 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 	int **data=0, n=200;
+	int i = 0;
 	char **idname=0;
 	char **idsubj=0;
 	string namef();
@@ -30,9 +31,25 @@ int main()
 	}
 	do
 	{
+		_putws(FindFileData_csv.cFileName);
 		file.open(FindFileData_csv.cFileName);
 		read(&file, data, idname, idsubj);
 		file.close();
 	} while (FindNextFile(csv, &FindFileData_csv) != 0);
+	printf("\n\n__________Subject :\n");
+	while (idsubj[i][0] != 0)
+	{
+		printf("id:%d", i);
+		puts(idsubj[i]);
+		i++;
+	}
+	i = 0;
+	printf("\n\n__________Students :\n");
+	while (idname[i][0] != 0)
+	{
+		printf("id:%d", i);
+		puts(idname[i]);
+		i++;
+	}
 	system("pause");
 }

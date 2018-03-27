@@ -48,9 +48,9 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 						if (!gate)
 						{
 							strcpy(idsubj[i], mass);
-							printf("id:%d", i);
+							//printf("id:%d", i);
 							i++;
-							puts(mass);
+							//puts(mass);
 						}
 						gate = 0;
 					}
@@ -73,9 +73,9 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 				if (!gate)
 				{
 					strcpy(idname[j],str);
-					printf("id:%d", j);
+					//printf("id:%d", j);
 					j++;
-					puts(str);
+					//puts(str);
 				}
 				gate = 0;
 			}
@@ -88,5 +88,5 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 	}
 	i=0;
 	j=0;
-	printf("\n  %d   \n",count);
+	//printf("\n  %d   \n",count);
 }
