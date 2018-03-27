@@ -12,13 +12,11 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 	int count=0,i=0,j=0,n=200;
 	char mass[200];
 	char str[200];
-	idsubj=(char**) malloc(n*sizeof(char*));
-	idname=(char**) malloc(n*sizeof(char*));
-	for (int i=0; i<n; i++){
-		idsubj[i]=(char*) malloc (n*sizeof(char));
-		idname[i]=(char*) malloc (n*sizeof(char));
-	}
-
+	int gate = 0;
+	while (idsubj[i][0] != 0)
+		i++;
+	while (idname[j][0] != 0)
+		j++;
 	while(!file->eof())
 	{
 		file->getline(mass, 200, ',');
@@ -37,19 +35,49 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 
 					if(!(((mass[0]=='"')&&(mass[1]=='"'))||((mass[1]=='Ä')&&(mass[2]=='î')&&(mass[3]=='ë')&&(mass[4]=='ã')&&(mass[5]=='î')&&(mass[6]=='â'))))
 					{
-						strcpy(idsubj[i],mass);
-						i++;
-						puts(mass);
+						int i1 = 0;
+						while (idsubj[i1][0] != 0)
+						{
+							if (strcmp(idsubj[i1], mass) == 0)
+							{
+								gate = 1;
+								break;
+							}
+							i1++;
+						}
+						if (!gate)
+						{
+							strcpy(idsubj[i], mass);
+							printf("id:%d", i);
+							i++;
+							puts(mass);
+						}
+						gate = 0;
 					}
-				 }
-				while(!((mass[1]=='Ä')&&(mass[2]=='î')&&(mass[3]=='ë')&&(mass[4]=='ã')&&(mass[5]=='î')&&(mass[6]=='â')));
+				 }while(!((mass[1]=='Ä')&&(mass[2]=='î')&&(mass[3]=='ë')&&(mass[4]=='ã')&&(mass[5]=='î')&&(mass[6]=='â')));
 			}
 
 			if(((mass[1]=='Ñ')&&(mass[2]=='Í'))||((mass[1]=='Î')&&(mass[2]=='Î'))||((mass[1]=='Ö')&&(mass[2]=='Í')))
 			{
-				strcpy(idname[j],str);
-						j++;
-				puts(str);
+
+				int i1 = 0;
+				while (idname[i1][0] != 0)
+				{
+					if (strcmp(idname[i1], str) == 0)
+					{
+						gate = 1;
+						break;
+					}
+					i1++;
+				}
+				if (!gate)
+				{
+					strcpy(idname[j],str);
+					printf("id:%d", j);
+					j++;
+					puts(str);
+				}
+				gate = 0;
 			}
 
 			/*puts(mass);
