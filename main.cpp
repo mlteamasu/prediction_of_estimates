@@ -7,6 +7,7 @@
 #include<windows.h>
 using namespace std;
 
+// -------------------- example -----------------
 
 int main()
 {
