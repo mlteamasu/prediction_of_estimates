@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void read(ifstream *file, int **data, char **idname, char **idsubj)
+void read(ifstream &file, char **idname, char **idsubj)
 {
 	int count=0,i=0,j=0,n=200;
 	char mass[200];
@@ -17,9 +17,9 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 		i++;
 	while (idname[j][0] != 0)
 		j++;
-	while(!file->eof())
+	while(!file.eof())
 	{
-		file->getline(mass, 200, ',');
+		file.getline(mass, 200, ',');
 		count++;
 		if(!((mass[0]=='"')&&(mass[1]=='"')))
 		{	
@@ -30,7 +30,7 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 			{
 				 do{
 
-					file->getline(mass, 200, ',');
+					file.getline(mass, 200, ',');
 					count++;
 
 					if(!(((mass[0]=='"')&&(mass[1]=='"'))||((mass[1]=='Д')&&(mass[2]=='о')&&(mass[3]=='л')&&(mass[4]=='г')&&(mass[5]=='о')&&(mass[6]=='в'))))
@@ -88,5 +88,137 @@ void read(ifstream *file, int **data, char **idname, char **idsubj)
 	}
 	i=0;
 	j=0;
+
 	//printf("\n  %d   \n",count);
+}
+
+void readint(ifstream &file, int **data, char **idname, char **idsubj)
+{
+	char buff[200];
+	int gate = 0, gate1 = 0, gate2 = 0, gate3 = 0;;
+	int i = 0, j = 1;
+	int i1=0, j1 = 0;
+	data[i][j] = -1;
+	while (!file.eof())
+	{
+		file.getline(buff, 200, ',');
+		if (!((buff[0] == '"') && (buff[1] == '"')))
+		{
+			if (gate2)
+			{
+				gate2--;
+				continue;
+			}
+			if (!(strcmp(buff, "\"ФИО\"")))
+			{
+				gate = 1;
+				continue;
+			}
+			if (!(strcmp(buff, "\"Долгов\"")))
+			{
+				gate = 0;
+				i++;
+				j = 0;
+				continue;
+			}
+			if (!(strcmp(buff, "\"Зачет\"")))
+			{
+				gate1 = 1;
+				continue;
+			}
+			if(gate)
+			{
+				while (idsubj[i1][0] != 0)
+				{
+					if(!(strcmp(buff, idsubj[i1])))
+						break;
+					i1++;
+				}
+				data[i][j]=i1;
+				i1 = 0;
+				j++;
+			}
+			if (gate1)
+			{
+
+				j1 = 0;
+				while (idname[j1][0] != 0)
+				{
+					if (!(strcmp(buff, idname[j1])))
+						break;
+					j1++;
+				}
+				if (idname[j1][0] == 0)
+					continue;
+				data[i][j] = j1;
+				j++;
+				gate2 = 2;
+				gate1 = 0;
+				gate3 = 1;
+				continue;
+			}
+			if(gate3)
+			{
+				/*
+				Отл- 5
+				Хор- 4
+				Удв- 3
+				Неуд- 2
+				Н/я- -1
+				Зач- 1
+				Н/з- 0
+				*/
+				if (!(strcmp(buff, "\"Неуд\"")))
+				{
+					data[i][j] = 2;
+					j++;
+					continue;
+				}
+				if (!(strcmp(buff, "\"Отл\"")))
+				{
+					data[i][j] = 5;
+					j++;
+					continue;
+				}
+				if (!(strcmp(buff, "\"Хор\"")))
+				{
+					data[i][j] = 4;
+					j++;
+					continue;
+				}
+				if (!(strcmp(buff, "\"Н/я\"")))
+				{
+					data[i][j] = -1;
+					j++;
+					continue;
+				}
+				if (!(strcmp(buff, "\"Удв\"")))
+				{
+					data[i][j] = 3;
+					j++;
+					continue;
+				}
+				if (!(strcmp(buff, "\"Зач\"")))
+				{
+					data[i][j] = 1;
+					j++;
+					continue;
+				}
+				if (!(strcmp(buff, "\"Н/з\"")))
+				{
+					data[i][j] = 0;
+					j++;
+					continue;
+				}
+				/*if ((!(strcmp(buff, "\"Неусп\"")))|| (!(strcmp(buff, "\"Успев\""))))
+				{*/
+					gate3 = 0;
+					gate1 = 1;
+					i++;
+					j = 0;
+					continue;
+				/*}*/
+			}
+		}
+	}
 }
