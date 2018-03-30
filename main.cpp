@@ -59,10 +59,11 @@ int main()
 		file.open(FindFileData_csv.cFileName);*/
 		file.seekg(0, ios_base::beg);
 		readint(file, data[count_f], idname, idsubj);
-		convert(data,idname, idsubj, dataset);
 		file.close();
 		count_f++;
 	} while (FindNextFile(csv, &FindFileData_csv) != 0);
+
+	convert(data, idname, idsubj, dataset);
 	printf("\n\n__________Subject :\n");
 	while (idsubj[i][0] != 0)
 	{

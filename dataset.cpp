@@ -226,19 +226,32 @@ void readint(ifstream &file, int **data, char **idname, char **idsubj)
 void convert(int ***data, char **idname, char **idsubj, int **dataset)
 {
 	int n=0, m =0, l=0; 
-	while (idsubj[n][0] != 0)
+	/*while (idsubj[n][0] != 0)
 		n++;
 	while (idname[m][0] != 0)
-		m++;
+		m++;*/
 	while (data[l][0][1] != -2)
 		l++;
 	for(int i=0; i<l; i++){
+		n = 2;
+		m = 2;
+		while (data[i][0][n] != -2)
+			n++;
+		while (data[i][m][0] != -2)
+			m++;
 		for(int j=1; j<m; j++){
 			for(int k=1; k<n; k++){
+				//printf("[%d][%d] = %d\n", data[i][0][k], data[i][j][0], data[i][j][k]);
 				dataset[data[i][0][k]][data[i][j][0]]=data[i][j][k];
 			}
 		}
 	}
+	n = 0;
+	m = 0;
+	while (idsubj[n][0] != 0)
+		n++;
+	while (idname[m][0] != 0)
+		m++;
 	for(int i=0; i<m; i++){
 		for(int j=0; j<n; j++){
 			printf("%d\t", dataset[j][i]);
