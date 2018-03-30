@@ -3,8 +3,9 @@
 #include<fstream>
 #include<stdio.h>
 #include <cstring>
+#include "H5Cpp.h"
 #include <cstdlib>
-
+using namespace H5;
 using namespace std;
 
 void read(ifstream &file, char **idname, char **idsubj)
@@ -188,7 +189,7 @@ void readint(ifstream &file, int **data, char **idname, char **idsubj)
 				}
 				if (!(strcmp(buff, "\"Н/я\"")))
 				{
-					data[i][j] = -1;
+					data[i][j] = -2;
 					j++;
 					continue;
 				}
@@ -200,13 +201,13 @@ void readint(ifstream &file, int **data, char **idname, char **idsubj)
 				}
 				if (!(strcmp(buff, "\"Зач\"")))
 				{
-					data[i][j] = 1;
+					data[i][j] = 5;
 					j++;
 					continue;
 				}
 				if (!(strcmp(buff, "\"Н/з\"")))
 				{
-					data[i][j] = 0;
+					data[i][j] = 2;
 					j++;
 					continue;
 				}
@@ -252,10 +253,33 @@ void convert(int ***data, char **idname, char **idsubj, int **dataset)
 		n++;
 	while (idname[m][0] != 0)
 		m++;
-	for(int i=0; i<m; i++){
+	/*for(int i=0; i<m; i++){
 		for(int j=0; j<n; j++){
 			printf("%d\t", dataset[j][i]);
 		}
 		printf("\n");
+	}*/
+}
+
+void write(int **dataset,int n,int m)
+{
+	printf("\n mass %d x %d\n", n, m);
+	int *data = (int*)malloc(sizeof(int)*n*m);
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			data[j*m + i] = dataset[j][i];
+			printf("%d\t", dataset[j][i]);
+		}
+		printf("\n");
 	}
+	const H5std_string DATASET_NAME1("data");
+	const H5std_string FILE_NAME1("DATASET.h5");
+	H5File file1(FILE_NAME1, H5F_ACC_TRUNC);
+	hsize_t dimsf1[1] = { n*m };
+	DataSpace dataspace1(1, dimsf1);
+	DataSet dataset1 = file1.createDataSet(DATASET_NAME1, PredType::NATIVE_INT, dataspace1);
+	dataset1.write(data, PredType::NATIVE_INT);
+	file1.close();
 }

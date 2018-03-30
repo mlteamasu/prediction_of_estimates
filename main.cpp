@@ -14,7 +14,7 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	int ***data=0, n=200;
 	int count_f = 0;
-	int i = 0;
+	int i = 0,j=0;
 	char **idname=0;
 	char **idsubj=0;
 	string namef();
@@ -48,7 +48,7 @@ int main()
 	{	
 		dataset[k] = (int*)malloc(100 * sizeof(int));
 		for(int i=0; i<100; i++)
-			dataset[k][i]=-3;
+			dataset[k][i]=-5;
 	}
 	do
 	{
@@ -65,11 +65,12 @@ int main()
 
 	convert(data, idname, idsubj, dataset);
 	printf("\n\n__________Subject :\n");
-	while (idsubj[i][0] != 0)
+	j = 0;
+	while (idsubj[j][0] != 0)
 	{
-		printf("id:%d", i);
-		puts(idsubj[i]);
-		i++;
+		printf("id:%d", j);
+		puts(idsubj[j]);
+		j++;
 	}
 	i = 0;
 	printf("\n\n__________Students :\n");
@@ -89,5 +90,6 @@ int main()
 		}
 		printf("\n");
 	}
+	write(dataset, j, i);
 	system("pause");
 }
