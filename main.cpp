@@ -18,6 +18,7 @@ int main()
 	char **idname=0;
 	char **idsubj=0;
 	string namef();
+	int **dataset=0;
 	ifstream file; // создаем объект класса ifstream
 	WIN32_FIND_DATA FindFileData_csv;
 	HANDLE csv;
@@ -42,14 +43,23 @@ int main()
 				data[i][j][k] = -2;
 		}
 	}
+	dataset = (int**)malloc(100 * sizeof(int*));
+	for (int k = 0; k < 100; k++)
+	{	
+		dataset[k] = (int*)malloc(100 * sizeof(int));
+		for(int i=0; i<100; i++)
+			dataset[k][i]=-3;
+	}
 	do
 	{
 		_putws(FindFileData_csv.cFileName);
 		file.open(FindFileData_csv.cFileName);
 		read(file,  idname, idsubj);
-		file.close();
-		file.open(FindFileData_csv.cFileName);
+		/*file.close();
+		file.open(FindFileData_csv.cFileName);*/
+		file.seekg(0, ios_base::beg);
 		readint(file, data[count_f], idname, idsubj);
+		convert(data,idname, idsubj, dataset);
 		file.close();
 		count_f++;
 	} while (FindNextFile(csv, &FindFileData_csv) != 0);
