@@ -11,8 +11,9 @@ using namespace std;
 
 int main()
 {
+	printf("sdfsdf");
 	setlocale(LC_ALL, "Russian");
-	int ***data=0, n=200;
+	int ***data=0, n=500;
 	int count_f = 0;
 	int i = 0,j=0;
 	char **idname=0;
@@ -35,19 +36,19 @@ int main()
 	data = (int***)malloc(100*sizeof(int**));
 	for (int i = 0; i < 100; i++)
 	{
-		data[i] = (int**)malloc(100 * sizeof(int*));
-		for (int j = 0; j < 100; j++)
+		data[i] = (int**)malloc(500 * sizeof(int*));
+		for (int j = 0; j < 500; j++)
 		{
-			data[i][j] = (int*)malloc(100 * sizeof(int));
-			for (int k = 0; k < 100; k++)
+			data[i][j] = (int*)malloc(500 * sizeof(int));
+			for (int k = 0; k < 500; k++)
 				data[i][j][k] = -2;
 		}
 	}
-	dataset = (int**)malloc(100 * sizeof(int*));
-	for (int k = 0; k < 100; k++)
+	dataset = (int**)malloc(1000 * sizeof(int*));
+	for (int k = 0; k < 1000; k++)
 	{	
-		dataset[k] = (int*)malloc(100 * sizeof(int));
-		for(int i=0; i<100; i++)
+		dataset[k] = (int*)malloc(1000 * sizeof(int));
+		for(int i=0; i<1000; i++)
 			dataset[k][i]=-5;
 	}
 	do
@@ -63,7 +64,7 @@ int main()
 		count_f++;
 	} while (FindNextFile(csv, &FindFileData_csv) != 0);
 
-	convert(data, idname, idsubj, dataset);
+
 	printf("\n\n__________Subject :\n");
 	j = 0;
 	while (idsubj[j][0] != 0)
@@ -90,6 +91,7 @@ int main()
 		}
 		printf("\n");
 	}
+	convert(data, idname, idsubj, dataset);
 	write(dataset, j, i);
 	system("pause");
 }

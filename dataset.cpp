@@ -177,37 +177,37 @@ void readint(ifstream &file, int **data, char **idname, char **idsubj)
 				}
 				if (!(strcmp(buff, "\"Отл\"")))
 				{
-					data[i][j] = 5;
+					data[i][j] = 4;
 					j++;
 					continue;
 				}
 				if (!(strcmp(buff, "\"Хор\"")))
 				{
-					data[i][j] = 4;
+					data[i][j] = 3;
 					j++;
 					continue;
 				}
 				if (!(strcmp(buff, "\"Н/я\"")))
 				{
-					data[i][j] = -2;
+					data[i][j] = 0;
 					j++;
 					continue;
 				}
 				if (!(strcmp(buff, "\"Удв\"")))
 				{
-					data[i][j] = 3;
+					data[i][j] = 2;
 					j++;
 					continue;
 				}
 				if (!(strcmp(buff, "\"Зач\"")))
 				{
-					data[i][j] = 5;
+					data[i][j] = 4;
 					j++;
 					continue;
 				}
 				if (!(strcmp(buff, "\"Н/з\"")))
 				{
-					data[i][j] = 2;
+					data[i][j] = 1;
 					j++;
 					continue;
 				}
@@ -263,23 +263,23 @@ void convert(int ***data, char **idname, char **idsubj, int **dataset)
 
 void write(int **dataset,int n,int m)
 {
-	printf("\n mass %d x %d\n", n, m);
-	int *data = (int*)malloc(sizeof(int)*n*m);
+	printf("\n mass %d x %d\n", m, n);
+	float *data = (float*)malloc(sizeof(float)*m*n);
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			data[j*m + i] = dataset[j][i];
-			printf("%d\t", dataset[j][i]);
+			data[j*m + i] = (dataset[j][i])/4.0;
+			printf("%f\t", data[j*m + i]);
 		}
 		printf("\n");
 	}
 	const H5std_string DATASET_NAME1("data");
 	const H5std_string FILE_NAME1("DATASET.h5");
 	H5File file1(FILE_NAME1, H5F_ACC_TRUNC);
-	hsize_t dimsf1[1] = { n*m };
-	DataSpace dataspace1(1, dimsf1);
-	DataSet dataset1 = file1.createDataSet(DATASET_NAME1, PredType::NATIVE_INT, dataspace1);
-	dataset1.write(data, PredType::NATIVE_INT);
+	hsize_t dimsf1[2] = {n,m };
+	DataSpace dataspace1(2, dimsf1);
+	DataSet dataset1 = file1.createDataSet(DATASET_NAME1, PredType::NATIVE_FLOAT, dataspace1);
+	dataset1.write(data, PredType::NATIVE_FLOAT);
 	file1.close();
 }
